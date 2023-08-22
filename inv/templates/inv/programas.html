@@ -1,0 +1,279 @@
+{% extends 'base/base.html' %}
+{% block page_content%}
+     <form method="post" id="frmProgramas" role="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-xl-12 col-md-12 mb-12">
+            {% if encabezado %}
+            <div class="card border-left-warning shadow h-100 py-2">
+            {% else %}
+            <div class="card border-left-success shadow h-100 py-2">
+            {% endif %}
+                <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {% if encabezado %} Agregar {% else %} Nuevo {% endif %} Proyecto 
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <div class="row">
+                                    <!-- Inicio Izquierda -->
+                                    <div class="col-6">
+                                        
+                                        
+                                        
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Programa:</label>
+                                            <div class="col-sm-6" >
+                                                
+                                              {{ form_enc.descripcion }}
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Donante:</label>
+                                            <div class="col-sm-6">
+                                                
+                                              {{ form_enc.donante }}
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="id_descripcion_detalle" class="col-sm-2 col-form-label">Proyecto:</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="id_descripcion_detalle" id="id_descripcion_detalle" required  >
+                                            </div>
+
+                                        </div>
+
+                                         
+                                                               
+                                        <div class="form-group row">
+                                            <label for="id_celular2_detalle" class="col-sm-2 col-form-label">Objetivos:</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="id_objetivo_detalle" id="id_objetivo_detalle" required >
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Fin Encabezado -->
+                                    </div>
+                                    <!-- Fin Izquierda -->
+                                    <!-- Inicio Derecha -->
+                                    <div class="col-6">  
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label" >Depto.:</label>
+                                            <div class="col-auto">
+                                                <select name="id_departamento" id="id_departamento" class="form-control from-control-sm" required>
+                                                    <option value="0">Seleccione</option>
+                                                    {% for item in departamentos %}
+                                                    <option value="{{item.id}}" >{{item.descripcion  }}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Municipio:</label>
+                                            <div class="col-auto">
+                                                <select name="id_municipio" id="id_municipio" class="form-control from-control-sm" required>
+                                                    <option value="0">Seleccione</option>
+                                                    {% for item in municipios %}
+                                                    <option value="{{item.id}}" data-chained="{{item.departamento.id}}">{{item.descripcion}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Comunidad:</label>
+                                            <div class="col-auto">
+                                                <select name="id_comunidad" id="id_comunidad" class="form-control from-control-sm" required multiple>
+                                                    <option value="0">Seleccione</option>
+                                                    {% for item in comunidades %}
+                                                    <option value="{{item.id}}" data-chained="{{item.municipio.id}}">{{item.descripcion}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label" >Pueblo:</label>
+                                            <div class="col-auto">
+                                                <select name="id_pueblo_detalle" id="id_pueblo_detalle" class="form-control from-control-sm" >
+                                                    <option value="0">Seleccione</option>
+                                                    {% for item in pueblos %}
+                                                    <option value="{{item.id}}" >{{item.descripcion  }}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    
+                                        
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label" >Población:</label>
+                                            <div class="col-auto">
+                                                <select name="id_poblacion_detalle" id="id_poblacion_detalle" class="form-control from-control-sm" required>
+                                                    <option value="0">Seleccione</option>
+                                                    {% for item in poblaciones %}
+                                                    <option value="{{item.id}}" >{{item.descripcion  }}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="id_cantidad_beneficiados_detalle" class="col-sm-2 col-form-label">Cantidad Beneficiarios:</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="id_cantidad_beneficiados_detalle" id="cantidad_beneficiados_detalle"  pattern="[0-9]+" required>
+                                            </div>
+                                        </div>
+                                       
+
+                                            
+                                        <!-- Botones -->
+                                        <div class="dropdown-divider"></div>
+                                        <div class="row">
+                                            
+                                            <div class="col">
+                                                {% if perms.inv.add_proyectodetalle %}
+                                                <button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+                                                {% endif %}
+                                                <a href="{% url 'inv:proyecto_list' %}" class="btn btn-success"><i class="far fa-hand-point-left"></i> Regresar</a>
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- Fin Botones -->
+                                    </div>
+                                    <!-- Fin Derecha -->
+                                </div>
+                                <!-- Inicio Detalle -->
+                                <div class="row">
+                                    <div class="col">
+                                        <table class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                                            <thead>
+                                               
+                                                <th>No.</th>
+                                                <th>Municipio</th>
+                                                <th>Pueblo</th>
+                                                <th>Proyecto</th>
+                                                <th>Objetivo</th>
+                                                <th>Población</th>
+                                                <th>Beneficiados</th>
+                                                <th>Comunidades</th>
+                                                <th class="all">Acciones</th>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in detalle %}
+                                                <tr>  
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ item.municipio }}</td>
+                                                <td>{{ item.pueblo }}</td>
+                                                <td>{{ item.descripcion }}</td>
+                                                <td>{{ item.objetivo }}</td>
+                                                <td>{{ item.poblacion }}</td>
+                                                <td>{{ item.cantidad_beneficiados }}</td>
+                                                <td>
+                                                    {% for com in item.comunidad.all %}
+                                                        {{ com.descripcion }}
+                                                        {% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                                                                                
+                                                <td>
+                                                    {% if perms.inv.change_proyectodetalle %}
+                                                    
+                                                    <a class="btn btn-success btn-circle" href="{% url 'inv:programas_detalle_edit' item.id %}"><i class="fas fa-cogs"></i></a>
+                                                    
+                                                    {% endif %}
+                                                    {% if perms.inv.delete_programadetalle %}
+                                                    <button class="btn btn-danger btn-circle" onclick="return abrir_modal('{% url 'inv:programas_del' encabezado.pk item.id %}')"><i class="fas fa-trash-alt"></i></button>
+                                                    {% endif %}
+                                                    
+                                                    
+                                                </td>
+                                                </tr>
+                                                {% endfor %} 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Fin Detalle -->
+                            </div>
+                        </div>
+                </div>
+        </div>
+     </form>
+{% endblock page_content%}
+{% block js_page %}
+
+<script>
+    $("#sidebarToggle").click();
+    // Call the dataTables jQuery plugin
+    $(document).ready(function() {
+    $('.table').DataTable({
+        "scrollX": true
+    });
+
+     // Validación de selección de campos de formulario
+     function validarSeleccion(idSelect, errorMessage) {
+        var select = $("#" + idSelect);
+        var selectedValue = select.val();
+
+        if (selectedValue === "0") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage,
+            });
+            return false;
+        }
+        
+        return true;
+    }
+
+    // Validar campos al enviar el formulario
+    $("form").on("submit", function(event) {
+        var isValidPueblo = validarSeleccion("id_pueblo_detalle", "Debe seleccionar un pueblo");
+        var isValidPoblacion = validarSeleccion("id_poblacion_detalle", "Debe seleccionar una población");
+
+        if (!isValidPueblo || !isValidPoblacion) {
+            event.preventDefault(); // Evitar el envío del formulario
+        }
+    });
+
+
+       
+    
+}); 
+
+{% if form.errors %}
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        // Aquí puedes realizar alguna acción con los errores
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            Swal.fire({
+                title: 'Error!',
+                text: 'Registro ya Existe!!!',
+                icon: 'error',
+            });
+        {% endif %}
+    
+
+$(function() {
+        $("#id_departamento").val("{{ detalle.municipio.departamento.id }}").change();
+        $("#id_municipio").val("{{ detalle.municipio.id }}").change();
+        $("#id_municipio").chained("#id_departamento");
+    });
+
+$(function() {
+        $("#id_municipio").val("{{ detalle.comunidad.municipio.id }}").change();
+        $("#id_comunidad").val("{{ detalle.comunidad.id }}").change();
+        $("#id_comunidad").chained("#id_municipio");
+    });
+  
+</script>
+
+
+
+
+{% endblock js_page%}

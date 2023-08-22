@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+
+<div class="container">
+    {% if obj %}
+    <form method="POST" role="form" class="form-inline" action="" >
+    {% else %}
+    <form method="POST" role="form" class="form-inline" action="{% url 'inv:comunidad_new' %}" >
+    {% endif %}
+        <div class="col-xl-12 col-md-12 mb-12">
+            {% if obj %}
+            <div class="card border-left-warning shadow h-100 py-2">
+            {% else %}
+            <div class="card border-left-success shadow h-100 py-2">
+            {% endif %}
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        {% if obj %} Editar {% else %} Nueva {% endif %} Comunidad
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="col-auto">Departamento</div>
+                                <div class="col-auto">
+                                    <select name="departamento" id="id_departamento" class="form-control from-control-sm" required>
+                                        <option value="0">Seleccione</option>
+                                        {% for item in departamentos %}
+                                        <option value="{{item.id}}">{{item.descripcion}}</option>
+                                        {% endfor%}
+                                    </select>
+                                    
+                                </div>
+                            </div>  
+                            <div class="col-auto">
+                                <div class="col-auto">Municipio</div>
+                                <div class="col-auto">
+                                    <select name="municipio" id="id_municipio" class="form-control from-control-sm" required>
+                                        <option value="0">Seleccione</option>
+                                        {% for item in municipios %}
+                                        <option value="{{item.id}}" data-chained="{{item.departamento.id}}">{{item.descripcion}}</option>
+                                        {% endfor%}
+                                    </select>
+                                    
+                                </div>
+                            </div>  
+
+                            <div class="col-auto">
+                                <div class="col-auto">Descripcion</div>
+                                <div class="col-auto">
+                                    {{ form.descripcion }}
+                                    
+                                </div>
+                            </div>                           
+                             
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    <label for="id_estado">Estado</label>
+                                    {{ form.estado }}
+                                </div>
+                            </div>                    
+                        </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Guardar</button>
+                            <a href="{% url 'inv:comunidad_list' %}" class="btn btn-success"><span class="fa fa-undo"></span>Cancelar</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="far fa-calendar-plus fa-2x text-gray-300"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </form>     
+</div>
+{% endblock page_content %}
+
+{% block js_page %}
+
+<script>
+    $(function(){
+        $("#id_departamento").val("{{ obj.municipio.departamento.id }}").change();
+        $("#id_municipio").val("{{ obj.municipio.id }}").change();
+        $("#id_municipio").chained("#id_departamento");
+    });
+</script>
+
+{% if form.errors %}
+<script>
+    Swal.fire({
+        title: 'Error!',
+        text: 'Una comunidad con este nombre ya existe para este municipio.',
+        icon: 'error',
+    });
+</script>
+{% endif %}
+
+{% endblock js_page %}
+
+    
+
+

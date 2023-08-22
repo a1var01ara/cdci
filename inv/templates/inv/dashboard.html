@@ -1,0 +1,170 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+
+<div class="container-fluid">
+    
+    
+    <!-- Card Body -->
+   <div class="card-body">
+       <!-- Page Heading -->
+       <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">DASHBOARD</h1>
+                
+      </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Cantidad de Programas</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ proyectos }} </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-home fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Cantidad de Proyectos</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{programas}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-igloo fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Cantidad de Cooperantes</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{cantidad_cooperantes}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Cantidad de Instituciones</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cantidad_instituciones }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Earnings (Monthly) Card Example -->
+            
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Reporte por PND</h6>
+        </div>
+        <div class="card-body">
+            <div class="chart-bar" id="chartContainer">
+                <canvas id="myBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <style>
+        .chart-bar {
+            position: relative; /* Asegura que el canvas se ajuste al tamaño del div */
+            width: 100%; /* Ocupa el 100% del ancho del div */
+            height: 100%; /* Ocupa el 100% del alto del div */
+        }
+    </style>
+
+   </div>
+</div>
+ 
+  
+{% endblock page_content %}
+
+{% block js_page %}
+
+<script>
+    // Obtener las sumas de montos desde el contexto de Django
+    var sumasMontosPND = {{ sumas_montos_pnd|safe }};
+    var sumasMontosOtro = {{ sumas_montos_otro|safe }};
+    
+    // Obtener el contexto del gráfico
+    var ctx = document.getElementById('myBarChart').getContext('2d');
+    
+    // Configuración del gráfico con el plugin "datalabels"
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                "PND1", "PND2", "PND3", "PND4", "PND5",
+                "PND6", "PND7", "PND8", "PND9", "PND10",
+                "Otro1", "Otro2", "Otro3"
+            ],
+            datasets: [{
+                label: 'Inversión por prioridad',
+                backgroundColor: '#4e73df',
+                borderColor: '#4e73df',
+                data: [...sumasMontosPND, ...sumasMontosOtro], // Combinar los datos de PND y Otro
+            }],
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    color: 'black', // Color de las etiquetas
+                    anchor: 'end', // Posición de las etiquetas
+                    align: 'top', // Alineación de las etiquetas
+                    formatter: function(value) {
+                        return '$' + value; // Formato de las etiquetas
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false // Ocultar líneas de la grilla en el eje X
+                    }
+                },
+                y: {
+                    display: false // Ocultar el eje Y
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock js_page %}

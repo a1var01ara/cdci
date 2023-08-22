@@ -1,0 +1,380 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CDCI System</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static  'base/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+
+ <!-- para graficas-->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+
+
+
+  <!-- Custom styles for this template-->
+  <link href="{% static  'base/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+   <!-- Custom styles for this page -->
+   <link href="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+
+   <!-- jQuery Confirm -->
+  <link rel="stylesheet" href="{% static 'base/vendor/jquery_confirm/jquery-confirm.min.css' %}">
+
+  <!-- XDSoft DateTimePicker -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />  
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+</head>
+
+<body id="page-top" class="bg-gradient-primary">
+  {% block side_bar %}
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'bases:home' %}">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-sitemap"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3"> <sub>COOPERANTES</sub> </div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      {% if perms.inv.view_comunidad %}
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:dashboard' %}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li> 
+      {% endif %}
+      {% if perms.inv.view_proyecto %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:proyecto_list' %}">
+          <i class="fa fa-sign-language"></i>
+          <span>PROGRAMAS</span></a>
+      </li>
+      {% endif %}
+
+      {% if perms.inv.view_pnd %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:pnd_list' %}">
+          <i class="fa fa-cubes"></i>
+          <span>PND</span></a>
+      </li>
+      {% endif %}
+
+      {% if perms.inv.view_departamento %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:departamento_list' %}">
+          <i class="fa fa-arrow-circle-right"></i>
+          <span>Departamentos</span></a>
+      </li>
+      {% endif %}
+
+      {% if perms.inv.view_municipio %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:municipio_list' %}">
+          <i class="fa fa-chevron-circle-right"></i>
+          <span>Municipios</span></a>
+      </li>
+      {% endif %}
+      {% if perms.inv.view_comunidad %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:comunidad_list' %}">
+          <i class="fa fa-chevron-circle-down"></i>
+          <span>Comunidad</span></a>
+      </li>
+      {% endif %}
+
+
+      {% if perms.inv.view_pueblo %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:pueblo_list' %}">
+          <i class="fa fa-users"></i>
+          <span>Pueblos</span></a>
+      </li>
+      {% endif %}
+
+      {% if perms.inv.view_poblacion %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:poblacion_list' %}">
+          <i class="fa fa-user-plus"></i>
+          <span>Poblacion</span></a>
+      </li>
+      {% endif %}
+      
+
+      {% if perms.inv.view_comunidad %}
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inv:directorio_list' %}">
+          <i class="fa fa-user-plus"></i>
+          <span>Directorio</span></a>
+      </li>
+      
+      {% endif %}
+      
+
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    {% endblock side_bar %}
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        {% block top_bar %}
+        <nav class="navbar bg-gradient-primary navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+       
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+           
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="mr-2 d-none d-lg-inline text-gray-400 ">{{ user.username }}</span>
+                  <img class="img-profile rounded-circle" src="{% static 'base/img/undraw_profile.svg' %}">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                   aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
+                      <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                      Salir
+                  </a>
+              </div>
+          </li>
+
+          </ul>
+
+        </nav>
+        {% endblock top_bar %}
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        {% block page_content %}
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+              <h1 class="h3 mb-0 text-gray-800"></h1>
+          </div>
+          <p style="text-align:center" class="h3 mb-0 text-gray-800"> </p>
+          <div class="row justify-content-center">
+              <div class="col-lg-6 text-center">
+                  <img src="{% static 'base/img/logo.png' %}" alt="Imagen de fondo" style="max-width: 100%; height: auto;">
+              </div>
+          </div>
+      </div>
+      
+
+        {% endblock %}
+        <!-- /.container-fluid -->
+        {% block footer %}
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span id="copyright"></span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  {% endblock %}
+  <!-- End of Page Wrapper -->
+  {% block login %} {% endblock %}
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">¿Cerrar Sesión para <mark> {{ user.username}} </mark>?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Al dar click en el botón Salir, cerrará la sesión para <mark> {{ user.username}} </mark>  </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-primary" href="{% url 'bases:logout' %}">Salir</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="popup"></div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static  'base/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static  'base/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static  'base/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static  'base/js/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'base/vendor/datatables/jquery.dataTables.min.js'%}"></script>
+  <script src="{% static 'base/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+   <script src="{% static 'base/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
+
+
+  <script src="{% static 'base/vendor/jquery_confirm/jquery-confirm.min.js' %}"></script>
+  <!-- borrar -->
+  <script src="{% static 'base/vendor/Chart.js/chart.min.js' %}"></script>
+  <script src="{% static 'base/js/demo/chart-bar-demo.js' %}"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>  
+
+  <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table-locale-all.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+  
+  <script src="{% static  'base/js/jquery.chained.min.js' %}"></script>
+
+  <script>
+
+    $(document).ready(function () {
+      jQuery.datetimepicker.setLocale('es');
+    });
+
+
+  </script>
+    
+
+  <script>
+    
+    
+    function abrir_modal(url)
+    {
+      $("#popup").load(url, function(){
+        $(this).modal({
+          backdrop:'static',
+          keyboard: false
+
+        })
+        $(thist).modal('show');
+       
+      });
+      return false;
+
+    }
+
+    function cerrar_modal()
+    {
+      $('#popup').modal('hide');
+      return false;
+    }
+    
+    
+    function mensaje(msg,color='green')
+    {
+      if (color=="success")
+      {
+        color="green";
+      }
+      if (color=="error")
+      {
+        color="red";
+      }
+
+
+      $.alert({
+        title:'',
+        theme:'material',
+        type:color,
+        content:msg
+      });
+    }
+
+    {% if messages %}
+      {% for message in messages %}
+        //console.log("{{ message.tags }}");
+        mensaje("{{ message }}","{{ message.tags }}");
+      {% endfor %}
+    {% endif %}
+
+
+    
+</script>
+
+<script>
+  const currentYear = new Date().getFullYear();
+  const copyrightSpan = document.getElementById('copyright');
+  copyrightSpan.textContent = `Copyright © AALD ${currentYear}`;
+</script>
+ 
+  {% block js_page %} {% endblock %}
+</body>
+
+</html>

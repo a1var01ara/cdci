@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Listado de Comunidades {{obj.count}} </h6>
+     
+      {% if perms.inv.add_comunidad %} 
+      <a class="btn btn-primary" href="{% url 'inv:comunidad_new' %}"><i class="far fa-calendar-plus"></i> Nuevo</a>
+      {% endif %}
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      {% if not obj %}
+      <div class="alert alert-info">No hay Comunidades</div>
+      {% else %}
+      <table class="table table-striped table-hover">
+          <thead>
+              <th>Numero</th>
+              <th>Departamento</th>
+              <th>Municipio</th>
+              <th>Comunidad</th>
+              <th>Estado</th>
+              <th>F. Creado</th>
+              <th>F. Modif.</th>
+              <th class="all">Acciones</th>
+          </thead>
+          <tbody>
+              {% for item in obj %}
+              <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ item.municipio.departamento }}</td>
+                  <td>{{ item.municipio }}</td>
+                  <td>{{ item.descripcion }}</td>
+                  <td>{{ item.estado|yesno:"Activo,Inactivo" }}</td>
+                  <td>{{ item.fc|date:"d/m/Y H:i:s" }}</td>
+                  <td>{{ item.fm|date:"d/m/Y H:i:s" }}</td>
+                  <td>
+                    {% if perms.inv.change_comunidad %}
+                  <a class="btn btn-warning btn-circle" href="{% url 'inv:comunidad_edit' item.id %}"><i class="far fa-edit"></i></a>
+                  {% endif %}
+                  {% if perms.inv.delete_comunidad %}
+                  <a class="btn btn-danger btn-circle" href="{% url 'inv:comunidad_del' item.id %}"><i class="fas fa-trash-alt"></i></a>
+                  
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock page_content %}
+{% block js_page %}
+<script>
+  $("#sidebarToggle").click();
+  // Call the dataTables jQuery plugin
+  $(document).ready(function() {
+    $('.table').DataTable();
+  });
+</script>
+{% endblock js_page %} 

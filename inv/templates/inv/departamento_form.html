@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+
+<div class="container">
+    {% if obj %}
+    <form method="POST" role="form" class="form-inline" action="" >
+    {% else %}
+    <form method="POST" role="form" class="form-inline" action="{% url 'inv:departamento_new' %}" >
+    {% endif %}
+        <div class="col-xl-12 col-md-12 mb-12">
+            {% if obj %}
+            <div class="card border-left-warning shadow h-100 py-2">
+            {% else %}
+            <div class="card border-left-success shadow h-100 py-2">
+            {% endif %}
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        {% if obj %} Editar {% else %} Nueva {% endif %} Departamento
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="col-auto">Descripcion</div>
+                                <div class="col-auto">
+                                    {{ form.descripcion }}
+                                    
+                                </div>
+                            </div> 
+
+                           
+                            
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    <label for="id_estado">Estado</label>
+                                    {{ form.estado }}
+                                </div>
+                            </div>                    
+                        </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Guardar</button>
+                            <a href="{% url 'inv:departamento_list' %}" class="btn btn-success"><span class="fa fa-undo"></span>Cancelar</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="far fa-calendar-plus fa-2x text-gray-300"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </form>     
+</div>
+{% endblock page_content %}
+
+{% block js_page %}
+
+<script>
+    $("#sidebarToggle").click();
+    {% if form.errors %}
+          
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                                 
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        
+
+        Swal.fire({
+          title: 'Error!',
+         text: 'Registro ya Existe!!!',
+         icon: 'error',
+        
+        });
+    {% endif %}
+
+
+    
+</script>
+{%  endblock js_page %}
+
+
+
+    
+
+

@@ -1,0 +1,317 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+
+<div class="container-fluid">     
+   
+    <form method="POST" role="form" class="form-inline" action="{% url 'inv:programas_detalle_edit' obj.pk %}" >
+        <div class="col-xl-12 col-md-12 mb-12">
+            {% if obj %}
+            <div class="card border-left-warning shadow h-100 py-2">
+            {% else %}
+            <div class="card border-left-success shadow h-100 py-2">
+            {% endif %}
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        {% if obj %} Editar {% else %} Nuevo {% endif %} Programa
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="col-auto">Departamento</div>
+                                <div class="col-auto">
+                                    <select name="departamento" id="id_departamento" class="form-control from-control-sm" required>
+                                        <option value="0">Seleccione</option>
+                                        {% for item in departamentos %}
+                                        <option value="{{item.id}}">{{item.descripcion}}</option>
+                                        {% endfor%}
+                                    </select>
+                                    
+                                </div>
+                            </div>  
+                            <div class="col-auto">
+                                <div class="col-auto">Municipio</div>
+                                <div class="col-auto">
+                                    <select name="municipio" id="id_municipio" class="form-control from-control-sm" required>
+                                        <option value="0">Seleccione</option>
+                                        {% for item in municipios %}
+                                        <option value="{{item.id}}" data-chained="{{item.departamento.id}}">{{item.descripcion}}</option>
+                                        {% endfor%}
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="col-auto">Comunidades: <span id="count">0</span></div>
+                                <div class="col-auto"> 
+                            <select name="comunidad" id="id_comunidad" class="form-control from-control-sm" required multiple>
+                                <option value="0">Seleccione</option>
+                                {% for item in comunidades %}
+                                    <option value="{{item.id}}" data-chained="{{item.municipio.id}}"
+                                            {% if item.id in form.comunidad.value %}selected{% endif %}>
+                                        {{item.descripcion}}
+                                    </option>
+                                {% endfor %}
+                                </select>
+                                    </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="col-auto">Proyecto</div>
+                                <div class="col-auto">
+                                    {{ form.descripcion }}
+                                   
+                                </div>
+                            </div>   
+                                 
+                            <div class="col-auto">
+                                <div class="col-auto">Objetivo/Poposito</div>
+                                <div class="col-auto">
+                                    {{ form.objetivo }}
+                                </div>
+                            </div>    
+                            <div class="col-auto">
+                                <div class="col-auto">Poblacion</div>
+                                <div class="col-auto">
+                                    {{ form.poblacion }}
+                                </div>
+                            </div>  
+                            <div class="col-auto">
+                                <div class="col-auto">Pueblo</div>
+                                <div class="col-auto">
+                                    {{ form.pueblo }}
+                                </div>
+                            </div>   
+                            <div class="col-auto">
+                                <div class="col-auto">Cantidad Beneficiarios</div>
+                                <div class="col-auto">
+                                    {{ form.cantidad_beneficiados }}
+                                </div>
+                            </div>                                        
+                        </div>
+                       
+                    <div class="dropdown-divider"></div>
+                    <div class="mx-auto">
+                        <table class="text-right">
+                          <tr class="text-center">
+                            <th>PRIORIDAD NACIONAL DE DESARROLLO</th>
+                            <th>MONTO Q. </th>
+                            <th>META </th>
+                            <th>INDICADOR</th>
+                          </tr>
+                          <tr>
+                            <td>ACCESO A SERVICIOS DE SALUD</td>
+                            <td>{{ form.montoPND1 }}</td>
+                            <td>{{ form.metaPND1 }}</td>
+                            <td>{{ form.indicadorPND1 }}</td>
+                          </tr>
+                          <tr>
+                            <td>EDUCACIÓN</td>
+                            <td>{{ form.montoPND2 }}</td>
+                            <td>{{ form.metaPND2 }}</td>
+                            <td>{{ form.indicadorPND2 }}</td>
+                            
+                          </tr>
+                          <tr>
+                            <td>REDUCCIÓN DE LA POBREZA Y PROTECCIÓN SOCIAL</td>
+                            <td>{{ form.montoPND3 }}</td>
+                            <td>{{ form.metaPND3 }}</td>
+                            <td>{{ form.indicadorPND3 }}</td>
+                          </tr>
+                          <tr>
+                            <td>EMPLEO E INVERSIÓN</td>
+                            <td>{{ form.montoPND4 }}</td>
+                            <td>{{ form.metaPND4 }}</td>
+                            <td>{{ form.indicadorPND4 }}</td>
+                          </tr>
+                          <tr>
+                            <td>ACCESO AL AGUA Y GESTIÓN DE RRNN</td>
+                            <td>{{ form.montoPND5 }}</td>
+                            <td>{{ form.metaPND5 }}</td>
+                            <td>{{ form.indicadorPND5 }}</td>
+                          </tr>
+                          <tr>
+                            <td>VALOR ECONÓMICO DE LOS RECURSOS NATURALES</td>
+                            <td>{{ form.montoPND6 }}</td>
+                            <td>{{ form.metaPND6 }}</td>
+                            <td>{{ form.indicadorPND6 }}</td>
+                          </tr>
+                          <tr>
+                            <td>ORDENAMIENTO TERRITORIAL</td>
+                            <td>{{ form.montoPND7 }}</td>
+                            <td>{{ form.metaPND7 }}</td>
+                            <td>{{ form.indicadorPND7 }}</td>
+                          </tr>
+                          <tr>
+                            <td>FORTALECIMIENTO INSTITUCIONAL, SEGURIDAD Y JUSTICIA</td>
+                            <td>{{ form.montoPND8 }}</td>
+                            <td>{{ form.metaPND8 }}</td>
+                            <td>{{ form.indicadorPND8 }}</td>
+                          </tr>
+                          <tr>
+                            <td>REFORMA FISCAL INTEGRAL</td>
+                            <td>{{ form.montoPND9 }}</td>
+                            <td>{{ form.metaPND9 }}</td>
+                            <td>{{ form.indicadorPND9 }}</td>
+                          </tr>
+                          <tr>
+                            <td>SEGURIDAD ALIMENTARIA Y NUTRICIONAL</td>
+                            <td>{{ form.montoPND10 }}</td>
+                            <td>{{ form.metaPND10 }}</td>
+                            <td>{{ form.indicadorPND10 }}</td>
+                          </tr>
+                          <tr class="text-center">
+                          <th>OTROS</th>
+                            <th>MONTO Q. </th>
+                            <th>META </th>
+                            <th>INDICADOR</th>
+                          </tr>
+                          <tr>
+                            <td>{{ form.PNDOtro1 }}</td>
+                            <td>{{ form.montoOtro1 }}</td>
+                            <td>{{ form.metaOtro1 }}</td>
+                            <td>{{ form.indicadorOtro1 }}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ form.PNDOtro2 }}</td>
+                            <td>{{ form.montoOtro2 }}</td>
+                            <td>{{ form.metaOtro2 }}</td>
+                            <td>{{ form.indicadorOtro2 }}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ form.PNDOtro3 }}</td>
+                            <td>{{ form.montoOtro3 }}</td>
+                            <td>{{ form.metaOtro3 }}</td>
+                            <td>{{ form.indicadorOtro3 }}</td>
+                          </tr>
+                          <tr>
+                            <td>Total Q.</td>
+                            <td colspan="2">
+                                <table class="text-right">
+                                    <tr>
+                                        <td id="totalMontoPND">0.00</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        </table>
+                      </div>
+                    <div class="row">
+                        <div class="col">
+                            
+                            {% if perms.inv.add_proyectodetalle %}
+                            <button type="submit" class="btn btn-primary"><span class="fa fa-save"></span> Guardar</button>
+                            {% endif %}
+                            <button type="button" class="btn btn-success" onclick="history.back();"><i class="far fa-hand-point-left"></i> Regresar</button>
+                            
+                            
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="far fa-calendar-plus fa-2x text-gray-300"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <input type="hidden" id="previous_page" name="previous_page" value="/previous/page/url">
+    </form>     
+</div>
+
+{% endblock %}
+
+{% block js_page %} 
+<script>
+    $(document).ready(function() {
+        // Función para contar comunidades seleccionadas
+    function countSelectedComunidades() {
+        var selectedOptions = $("#id_comunidad option:selected");
+        var count = selectedOptions.length;
+        $("#count").text(count);
+    }
+
+    // Llamar a la función de countSelectedComunidades cuando se cargue la página y cuando cambie la selección
+    countSelectedComunidades();
+    $("#id_comunidad").on("change", countSelectedComunidades);
+    // Función para sumar los campos de montoPND
+    function sumarMontos() {
+        var total = 0;
+        // Obtener los valores de los campos de montoPND y sumarlos
+        total += parseFloat($("#id_montoPND1").val()) || 0;
+        total += parseFloat($("#id_montoPND2").val()) || 0;
+        total += parseFloat($("#id_montoPND3").val()) || 0;
+        total += parseFloat($("#id_montoPND4").val()) || 0;
+        total += parseFloat($("#id_montoPND5").val()) || 0;
+        total += parseFloat($("#id_montoPND6").val()) || 0;
+        total += parseFloat($("#id_montoPND7").val()) || 0;
+        total += parseFloat($("#id_montoPND8").val()) || 0;
+        total += parseFloat($("#id_montoPND9").val()) || 0;
+        total += parseFloat($("#id_montoPND10").val()) || 0;
+        total += parseFloat($("#id_montoOtro1").val()) || 0;
+        total += parseFloat($("#id_montoOtro2").val()) || 0;
+        total += parseFloat($("#id_montoOtro3").val()) || 0;
+        // Continuar sumando los demás campos de montoPND
+
+        // Actualizar el valor en la celda correspondiente
+        $("#totalMontoPND").text(total.toFixed(2)); // Redondear a 2 decimales y convertir a texto
+    }
+
+    // Llamar a la función de sumarMontos al cargar la página y cuando se cambie el valor de algún campo de montoPND
+    sumarMontos();
+    $("input[id^='id_montoPND']").on("change", sumarMontos);
+    $("input[id^='id_montoOtro']").on("change", sumarMontos);
+});
+
+
+    
+  
+$(document).ready(function() {
+    $("#sidebarToggle").click();
+    var prev = document.getElementById("previous_page");
+    prev.value = document.referrer;
+    // Obtener referencia al select
+    
+
+    {% for field in form %}
+        {% if field.errors %}
+            {% for error in field.errors %}
+                var fieldName = "{{ field.label|escapejs }}";
+                var errorMessage = "{{ error|escapejs }}";
+                Swal.fire({
+                    title: 'Error!',
+                    text: fieldName + ': ' + errorMessage,
+                    icon: 'error',
+                });
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    
+    
+});
+
+</script>
+<script>
+    $(function(){
+        $("#id_departamento").val("{{ obj.municipio.departamento.id }}").change();
+        $("#id_municipio").val("{{ obj.municipio.id }}").change();
+    
+        var selectedComunidades = [
+            {% for comunidad in obj.comunidad.all %}
+                "{{ comunidad.id }}",
+            {% endfor %}
+        ];
+    
+        $("#id_comunidad").val(selectedComunidades);
+        $("#id_municipio").chained("#id_departamento");
+        $("#id_comunidad").chained("#id_municipio");
+    });
+
+    
+    </script>
+   
+{% endblock %}
